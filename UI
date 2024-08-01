@@ -2582,21 +2582,6 @@ do
                 Color = "outline"
             }
             --
-            local listitem_username = utility:Create("TextLabel", {Vector2.new(4, 4 + listitemposition), list_frame}, {
-                Text = "",
-                Size = theme.textsize,
-                Font = theme.font,
-                Color = theme.textcolor,
-                OutlineColor = theme.textborder,
-                Position = utility:Position(0, 4, 0, 4 + listitemposition, list_frame),
-                Visible = page.open
-            }, playerList.visibleContent)
-            --
-            library.colors[listitem_username] = {
-                OutlineColor = "textborder",
-                Color = "textcolor"
-            }
-            --
             local listitem_team = utility:Create("TextLabel", {Vector2.new(6 + (1/3 * list_frame.Size.X), 4 + listitemposition), list_frame}, {
                 Text = "",
                 Size = theme.textsize,
