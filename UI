@@ -686,51 +686,7 @@ do
             library.pointers = {}
             library.colors = {}
             --
-            uis.MouseIconEnabled = false
-        end
-        --
-        function window:Cursor(info)
-            window.cursor = {}
-            --
-            local cursor = utility:Create("Triangle", nil, {
-                Color = theme.cursoroutline,
-                Thickness = 2.5,
-                Filled = false,
-                ZIndex = 65,
-                Hidden = true
-            });window.cursor["cursor"] = cursor
-            --
-            library.colors[cursor] = {
-                Color = "cursoroutline"
-            }
-            --
-            local cursor_inline = utility:Create("Triangle", nil, {
-                Color = theme.accent,
-                Filled = true,
-                Thickness = 0,
-                ZIndex = 65,
-                Hidden = true
-            });window.cursor["cursor_inline"] = cursor_inline
-            --
-            library.colors[cursor_inline] = {
-                Color = "accent"
-            }
-            --
-            utility:Connection(rs.RenderStepped, function()
-                local mouseLocation = utility:MouseLocation()
-                --
-                cursor.PointA = Vector2.new(mouseLocation.X, mouseLocation.Y)
-                cursor.PointB = Vector2.new(mouseLocation.X + 12, mouseLocation.Y + 4)
-                cursor.PointC = Vector2.new(mouseLocation.X + 4, mouseLocation.Y + 12)
-                --
-                cursor_inline.PointA = Vector2.new(mouseLocation.X, mouseLocation.Y)
-                cursor_inline.PointB = Vector2.new(mouseLocation.X + 12, mouseLocation.Y + 4)
-                cursor_inline.PointC = Vector2.new(mouseLocation.X + 4, mouseLocation.Y + 12)
-            end)
-            --
-            uis.MouseIconEnabled = false
-            --
-            return window.cursor
+            uis.MouseIconEnabled = true
         end
         --
         function window:Fade()
@@ -745,7 +701,7 @@ do
             --
             window.cursor["cursor"].Transparency = window.isVisible and 1 or 0
             window.cursor["cursor_inline"].Transparency = window.isVisible and 1 or 0
-            uis.MouseIconEnabled = false
+            uis.MouseIconEnabled = not window.isVisible
             --
             window.fading = false
         end
@@ -1190,7 +1146,7 @@ do
             library.ended = {}
             library.changed = {}
             --
-            uis.MouseIconEnabled = false
+            uis.MouseIconEnabled = true
         end
         --
         function window:Watermark(info)
@@ -1815,7 +1771,7 @@ do
             --
             window.cursor["cursor"].Transparency = window.isVisible and 1 or 0
             window.cursor["cursor_inline"].Transparency = window.isVisible and 1 or 0
-            uis.MouseIconEnabled = false
+            uis.MouseIconEnabled = not window.isVisible
             --
             window.fading = false
         end
