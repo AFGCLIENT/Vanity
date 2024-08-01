@@ -560,44 +560,56 @@ do
                 local dropdown = window.currentContent.dropdown
                 dropdown.open = not dropdown.open
                 utility:LoadImage(dropdown.dropdown_image, "arrow_down", "https://i.imgur.com/tVqy0nL.png")
-                for i, v in pairs(dropdown.holder.drawings) do
+                --
+                for i,v in pairs(dropdown.holder.drawings) do
                     utility:Remove(v)
                 end
+                --
                 dropdown.holder.drawings = {}
                 dropdown.holder.buttons = {}
                 dropdown.holder.inline = nil
+                --
                 window.currentContent.frame = nil
                 window.currentContent.dropdown = nil
             elseif window.currentContent.multibox and window.currentContent.multibox.open then
                 local multibox = window.currentContent.multibox
                 multibox.open = not multibox.open
                 utility:LoadImage(multibox.multibox_image, "arrow_down", "https://i.imgur.com/tVqy0nL.png")
-                for i, v in pairs(multibox.holder.drawings) do
+                --
+                for i,v in pairs(multibox.holder.drawings) do
                     utility:Remove(v)
                 end
+                --
                 multibox.holder.drawings = {}
                 multibox.holder.buttons = {}
                 multibox.holder.inline = nil
+                --
                 window.currentContent.frame = nil
                 window.currentContent.multibox = nil
             elseif window.currentContent.colorpicker and window.currentContent.colorpicker.open then
                 local colorpicker = window.currentContent.colorpicker
                 colorpicker.open = not colorpicker.open
-                for i, v in pairs(colorpicker.holder.drawings) do
+                --
+                for i,v in pairs(colorpicker.holder.drawings) do
                     utility:Remove(v)
                 end
+                --
                 colorpicker.holder.drawings = {}
+                --
                 window.currentContent.frame = nil
                 window.currentContent.colorpicker = nil
             elseif window.currentContent.keybind and window.currentContent.keybind.open then
                 local modemenu = window.currentContent.keybind.modemenu
                 window.currentContent.keybind.open = not window.currentContent.keybind.open
-                for i, v in pairs(modemenu.drawings) do
+                --
+                for i,v in pairs(modemenu.drawings) do
                     utility:Remove(v)
                 end
+                --
                 modemenu.drawings = {}
                 modemenu.buttons = {}
                 modemenu.frame = nil
+                --
                 window.currentContent.frame = nil
                 window.currentContent.keybind = nil
             elseif window.currentContent.textbox and window.currentContent.textbox.Disconnect then
@@ -605,53 +617,64 @@ do
                 window.currentContent.textbox = nil
             end
         end
-        
+        --
         function window:IsOverContent()
             local isOver = false
-            if window.currentContent.frame and utility:MouseOverDrawing({window.currentContent.frame.Position.X, window.currentContent.frame.Position.Y, window.currentContent.frame.Position.X + window.currentContent.frame.Size.X, window.currentContent.frame.Position.Y + window.currentContent.frame.Size.Y}) then
+            --
+            if window.currentContent.frame and utility:MouseOverDrawing({window.currentContent.frame.Position.X,window.currentContent.frame.Position.Y,window.currentContent.frame.Position.X + window.currentContent.frame.Size.X,window.currentContent.frame.Position.Y + window.currentContent.frame.Size.Y}) then
                 isOver = true
             end
+            --
             return isOver
         end
-        
+        --
         function window:Unload()
-            for i, v in pairs(library.connections) do
+            for i,v in pairs(library.connections) do
                 v:Disconnect()
                 v = nil
             end
-            for i, v in next, library.hidden do
+            --
+            for i,v in next, library.hidden do
                 coroutine.wrap(function()
                     if v[1] and v[1].Remove and v[1].__OBJECT_EXISTS then
                         local instance = v[1]
                         v[1] = nil
                         v = nil
+                        --
                         instance:Remove()
                     end
                 end)()
             end
-            for i, v in pairs(library.drawings) do
+            --
+            for i,v in pairs(library.drawings) do
                 coroutine.wrap(function()
                     if v[1].__OBJECT_EXISTS then
                         local instance = v[1]
                         v[2] = nil
                         v[1] = nil
                         v = nil
+                        --
                         instance:Remove()
                     end
                 end)()
             end
-            for i, v in pairs(library.objects) do
+            --
+            for i,v in pairs(library.objects) do
                 i:Remove()
             end
-            for i, v in pairs(library.began) do
+            --
+            for i,v in pairs(library.began) do
                 v = nil
             end
-            for i, v in pairs(library.ended) do
+            --
+            for i,v in pairs(library.ended) do
                 v = nil
             end
-            for i, v in pairs(library.changed) do
+            --
+            for i,v in pairs(library.changed) do
                 v = nil
             end
+            --
             library.shared.initialized = false
             library.drawings = {}
             library.objects = {}
@@ -662,71 +685,49 @@ do
             library.changed = {}
             library.pointers = {}
             library.colors = {}
+            --
             uis.MouseIconEnabled = true
         end
-        
-        -- Remove the cursor function
-        -- function window:Cursor(info)
-        --     window.cursor = {}
-        --     local cursor = utility:Create("Triangle", nil, {
-        --         Color = theme.cursoroutline,
-        --         Thickness = 2.5,
-        --         Filled = false,
-        --         ZIndex = 65,
-        --         Hidden = true
-        --     }); window.cursor["cursor"] = cursor
-        --     library.colors[cursor] = {
-        --         Color = "cursoroutline"
-        --     }
-        --     local cursor_inline = utility:Create("Triangle", nil, {
-        --         Color = theme.accent,
-        --         Filled = true,
-        --         Thickness = 0,
-        --         ZIndex = 65,
-        --         Hidden = true
-        --     }); window.cursor["cursor_inline"] = cursor_inline
-        --     library.colors[cursor_inline] = {
-        --         Color = "accent"
-        --     }
-        --     utility:Connection(rs.RenderStepped, function()
-        --         local mouseLocation = utility:MouseLocation()
-        --         cursor.PointA = Vector2.new(mouseLocation.X, mouseLocation.Y)
-        --         cursor.PointB = Vector2.new(mouseLocation.X + 12, mouseLocation.Y + 4)
-        --         cursor.PointC = Vector2.new(mouseLocation.X + 4, mouseLocation.Y + 12)
-        --         cursor_inline.PointA = Vector2.new(mouseLocation.X, mouseLocation.Y)
-        --         cursor_inline.PointB = Vector2.new(mouseLocation.X + 12, mouseLocation.Y + 4)
-        --         cursor_inline.PointC = Vector2.new(mouseLocation.X + 4, mouseLocation.Y + 12)
-        --     end)
-        --     uis.MouseIconEnabled = false
-        --     return window.cursor
-        -- end
-        
+        --
         function window:Fade()
             window.fading = true
             window.isVisible = not window.isVisible
+            --
             spawn(function()
                 for i, v in pairs(library.drawings) do
                     utility:Lerp(v[1], {Transparency = window.isVisible and v[3] or 0}, 0.25)
                 end
             end)
+            --
+            window.cursor["cursor"].Transparency = window.isVisible and 1 or 0
+            window.cursor["cursor_inline"].Transparency = window.isVisible and 1 or 0
+            uis.MouseIconEnabled = not window.isVisible
+            --
             window.fading = false
         end
-        
+        --
         function window:Initialize()
             if window.pages[1] then window.pages[1]:Show() end
-            for i, v in pairs(window.pages) do
+            --
+            for i,v in pairs(window.pages) do
                 v:Update()
             end
+            --
             library.shared.initialized = true
+            --
+            window:Cursor()
+            --
             window:Fade()
         end
-        
+        --
         library.began[#library.began + 1] = function(Input)
-            if Input.UserInputType == Enum.UserInputType.MouseButton1 and window.isVisible and utility:MouseOverDrawing({main_frame.Position.X, main_frame.Position.Y, main_frame.Position.X + main_frame.Size.X, main_frame.Position.Y + 20}) then
+            if Input.UserInputType == Enum.UserInputType.MouseButton1 and window.isVisible and window.isVisible and utility:MouseOverDrawing({main_frame.Position.X,main_frame.Position.Y,main_frame.Position.X + main_frame.Size.X,main_frame.Position.Y + 20}) then
                 local mouseLocation = utility:MouseLocation()
+                --
                 window.dragging = true
                 window.drag = Vector2.new(mouseLocation.X - main_frame.Position.X, mouseLocation.Y - main_frame.Position.Y)
             end
+            --
             if window.currentContent.textbox then
                 if Find(utility.Keyboard.Letters, utility:InputToString(Input.KeyCode)) then
                     if uis:IsKeyDown(Enum.KeyCode.LeftShift) then
@@ -746,10 +747,11 @@ do
                     end
                 elseif utility:InputToString(Input.KeyCode) == "Back" then
                     window.currentContent.textbox.Fire("Backspace")
+                    --
                     window.currentContent.textbox.Backspace = {tick(), 0}
                 end
             end
-        end        
+        end
         --
         library.ended[#library.ended + 1] = function(Input)
             if Input.UserInputType == Enum.UserInputType.MouseButton1 and window.isVisible and window.dragging then
